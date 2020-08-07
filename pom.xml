@@ -22,20 +22,21 @@
         <javaee.api.version>8.0.1</javaee.api.version>
         <javax.ejb.api.version>3.2.2</javax.ejb.api.version>
         <!-- Database -->
-        <postgres.version>42.2.12</postgres.version>
+        <postgres.version>42.2.14</postgres.version>
         <!-- JPA -->
         <jpa.api.version>2.2</jpa.api.version>
-        <eclipselink.jpa.version>2.7.6</eclipselink.jpa.version>
+        <eclipselink.jpa.version>3.0.0-M1</eclipselink.jpa.version>
         <eclipselink.version>3.0.0-M1</eclipselink.version>
         <!-- Testing -->
         <junit5.version>5.6.1</junit5.version>
-        <mockito.jupiter.version>3.3.3</mockito.jupiter.version>
+        <mockito.jupiter.version>3.4.6</mockito.jupiter.version>
         <!-- utils -->
         <microprofile.version>1.4</microprofile.version>
         <!--<rest.easy.version>4.5.5.Final</rest.easy.version>-->
     </properties>
 
     <dependencies>
+        <!-- Java EE -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
@@ -47,11 +48,13 @@
             <artifactId>javax.ejb-api</artifactId>
             <version>${javax.ejb.api.version}</version>
         </dependency>
+        <!-- Database -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgres.version}</version>
         </dependency>
+        <!-- ORM -->
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
@@ -67,6 +70,7 @@
             <artifactId>eclipselink</artifactId>
             <version>${eclipselink.version}</version>
         </dependency>
+        <!-- Unit Tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -79,7 +83,7 @@
             <version>${mockito.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.config/microprofile-config-api -->
+        <!-- Micro Profile -->
         <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-api</artifactId>
