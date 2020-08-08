@@ -25,7 +25,7 @@
         <postgres.version>42.2.14</postgres.version>
         <!-- JPA -->
         <jpa.api.version>2.2</jpa.api.version>
-        <eclipselink.jpa.version>3.0.0-M1</eclipselink.jpa.version>
+        <eclipselink.jpa.version>2.7.6</eclipselink.jpa.version>
         <eclipselink.version>3.0.0-M1</eclipselink.version>
         <!-- Testing -->
         <junit5.version>5.6.1</junit5.version>
