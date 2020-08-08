@@ -2,7 +2,7 @@
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN"
         "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
-    <jdbc-connection-pool name="mypetfinderdb_pool"
+    <jdbc-connection-pool name="petfinderdb_pool"
                           allow-non-component-callers="false"
                           associate-with-thread="false"
                           connection-creation-retry-attempts="0"
@@ -33,17 +33,16 @@
                           steady-pool-size="8"
                           validate-atmost-once-period-in-seconds="0"
                           wrap-jdbc-objects="true">
-        <property name="URL" value="jdbc:postgresql://localhost:5432/mypetfinderdb"/>
+        <property name="URL" value="jdbc:postgresql://localhost:5432/petfinderdb"/>
         <property name="User" value="postgres"/>
         <property name="Password" value="postgres"/>
         <property name="driverClass" value="org.postgresql.Driver"/>
         <property name="serverName" value="localhost"/>
         <property name="portNumber" value="5432"/>
-        <property name="databaseName" value="mypetfinderdb"/>
+        <property name="databaseName" value="petfinderdb"/>
     </jdbc-connection-pool>
 
-    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/mypetfinderdb" object-type="user"
-                   pool-name="mypetfinderdb_pool">
-        <description>Test DataSource jdbc/mypetfinderdb for Connection Pool jdbc/mypetfinderdb_pool</description>
+    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/petfinderdb" object-type="user" pool-name="petfinderdb_pool">
+        <description>Test DataSource jdbc/petfinderdb for Connection Pool jdbc/petfinderdb_pool</description>
     </jdbc-resource>
 </resources>
