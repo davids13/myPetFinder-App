@@ -14,7 +14,7 @@ public class GenericDAO {
     @PersistenceContext(unitName = PERSISTENT_UNIT)
     private EntityManager entityManager;
 
-    // created the generic CRUD methods
+    // Generic CRUD methods
     public <T> void save(final T object) {
         entityManager.persist(object);
     }

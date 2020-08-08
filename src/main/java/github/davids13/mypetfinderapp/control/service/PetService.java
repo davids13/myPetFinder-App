@@ -14,6 +14,7 @@ public class PetService {
     @Inject
     private GenericDAO genericDAO;
 
+    // Owner
     @SuppressWarnings("unchecked")
     public List<Owner> getOwnersList() {
         final Stream<Owner> ownerStream = (Stream<Owner>) genericDAO.getAll(Owner.OWNER_FIND_ALL, Owner.class);
