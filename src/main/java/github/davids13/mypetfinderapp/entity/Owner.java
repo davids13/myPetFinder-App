@@ -4,6 +4,7 @@ import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "owners")
+@NamedQuery(name = Owner.OWNER_FIND_ALL, query = Owner.OWNER_FIND_ALL_QUERY)
 public class Owner extends AbstractEntity implements Serializable {
 
     public static final String OWNER_FIND_ALL = "Owner.findAll";
