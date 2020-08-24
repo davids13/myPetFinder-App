@@ -2,13 +2,11 @@ package github.davids13.mypetfinderapp.entity;
 
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "owners")
@@ -27,6 +25,8 @@ public class Owner extends AbstractEntity implements Serializable {
     private String email;
     @Column
     private String phone;
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "owner")
+    private Set<Pet> pet;
 
     public String getFirstName() {
         return firstName;
@@ -60,24 +60,34 @@ public class Owner extends AbstractEntity implements Serializable {
         this.phone = phone;
     }
 
+    public Set<Pet> getPet() {
+        return pet;
+    }
+
+    public void setPet(Set<Pet> pet) {
+        this.pet = pet;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Owner owner = (Owner) o;
         return Objects.equals(firstName, owner.firstName) &&
                 Objects.equals(lastName, owner.lastName) &&
                 Objects.equals(email, owner.email) &&
-                Objects.equals(phone, owner.phone);
+                Objects.equals(phone, owner.phone) &&
+                Objects.equals(pet, owner.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, phone);
+        return Objects.hash(super.hashCode(), firstName, lastName, email, phone, pet);
     }
 
     @Override
     public String toString() {
-        return String.format("Owner{firstName='%s', lastName='%s', email='%s', phone='%s'}", firstName, lastName, email, phone);
+        return String.format("Owner{firstName='%s', lastName='%s', email='%s', phone='%s', pet=%s}", firstName, lastName, email, phone, pet);
     }
 }
