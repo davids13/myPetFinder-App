@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "localizations")
@@ -24,17 +25,8 @@ public class Localization extends AbstractEntity implements Serializable {
     @Column(name = "lost_date")
     @Temporal(TemporalType.DATE)
     private Date lostDate;
-
-    public Localization() {
-    }
-
-    public Localization(Integer id, String country, String city, String zone, Date lostDate) {
-        super(id);
-        this.country = country;
-        this.city = city;
-        this.zone = zone;
-        this.lostDate = lostDate;
-    }
+    @ManyToMany(mappedBy = "localization", fetch = FetchType.LAZY) // for bi-directionality
+    private Set<Pet> pets;
 
     public String getCountry() {
         return country;
@@ -68,6 +60,14 @@ public class Localization extends AbstractEntity implements Serializable {
         this.lostDate = lostDate;
     }
 
+    public Set<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(Set<Pet> pets) {
+        this.pets = pets;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,16 +77,17 @@ public class Localization extends AbstractEntity implements Serializable {
         return Objects.equals(country, that.country) &&
                 Objects.equals(city, that.city) &&
                 Objects.equals(zone, that.zone) &&
-                Objects.equals(lostDate, that.lostDate);
+                Objects.equals(lostDate, that.lostDate) &&
+                Objects.equals(pets, that.pets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), country, city, zone, lostDate);
+        return Objects.hash(super.hashCode(), country, city, zone, lostDate, pets);
     }
 
     @Override
     public String toString() {
-        return String.format("Localization{country='%s', city='%s', zone='%s', lostDate=%s}", country, city, zone, lostDate);
+        return String.format("Localization{country='%s', city='%s', zone='%s', lostDate=%s, pets=%s}", country, city, zone, lostDate, pets);
     }
 }
