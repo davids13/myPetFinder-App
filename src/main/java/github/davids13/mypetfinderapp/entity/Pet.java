@@ -4,8 +4,8 @@ import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "pets")
@@ -17,28 +17,18 @@ public class Pet extends AbstractEntity implements Serializable {
 
     @Column(name = "pet_name")
     private String petName;
-    @Column(name = "pet_height")
-    private String petHeight;
-    @Column(name = "pet_weight")
-    private String petWeight;
-    @Column(name = "pet_photo")
-    @Lob
-    private byte[] petPhoto;
     @Column(name = "pet_description")
     private String petDescription;
-
-    // A no arg constructor and full constructor for the serialization
-    public Pet() {
-    }
-
-    public Pet(Integer id, String petName, String petHeight, String petWeight, byte[] petPhoto, String petDescription) {
-        super(id);
-        this.petName = petName;
-        this.petHeight = petHeight;
-        this.petWeight = petWeight;
-        this.petPhoto = petPhoto;
-        this.petDescription = petDescription;
-    }
+    @ManyToOne
+    @JoinColumn(name = "ownerId", nullable = false)
+    private Owner owner;
+    @ManyToMany
+    @JoinTable(
+            name = "pet_localization",
+            joinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "localization_id", referencedColumnName = "id")
+    )
+    private Set<Localization> localization;
 
     public String getPetName() {
         return petName;
@@ -46,30 +36,6 @@ public class Pet extends AbstractEntity implements Serializable {
 
     public void setPetName(String petName) {
         this.petName = petName;
-    }
-
-    public String getPetHeight() {
-        return petHeight;
-    }
-
-    public void setPetHeight(String petHeight) {
-        this.petHeight = petHeight;
-    }
-
-    public String getPetWeight() {
-        return petWeight;
-    }
-
-    public void setPetWeight(String petWeight) {
-        this.petWeight = petWeight;
-    }
-
-    public byte[] getPetPhoto() {
-        return petPhoto;
-    }
-
-    public void setPetPhoto(byte[] petPhoto) {
-        this.petPhoto = petPhoto;
     }
 
     public String getPetDescription() {
@@ -80,6 +46,22 @@ public class Pet extends AbstractEntity implements Serializable {
         this.petDescription = petDescription;
     }
 
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    public Set<Localization> getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(Set<Localization> localization) {
+        this.localization = localization;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,21 +69,18 @@ public class Pet extends AbstractEntity implements Serializable {
         if (!super.equals(o)) return false;
         Pet pet = (Pet) o;
         return Objects.equals(petName, pet.petName) &&
-                Objects.equals(petHeight, pet.petHeight) &&
-                Objects.equals(petWeight, pet.petWeight) &&
-                Arrays.equals(petPhoto, pet.petPhoto) &&
-                Objects.equals(petDescription, pet.petDescription);
+                Objects.equals(petDescription, pet.petDescription) &&
+                Objects.equals(owner, pet.owner) &&
+                Objects.equals(localization, pet.localization);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(super.hashCode(), petName, petHeight, petWeight, petDescription);
-        result = 31 * result + Arrays.hashCode(petPhoto);
-        return result;
+        return Objects.hash(super.hashCode(), petName, petDescription, owner, localization);
     }
 
     @Override
     public String toString() {
-        return String.format("Pet{petName='%s', petHeight='%s', petWeight='%s', petPhoto=%s, petDescription='%s'}", petName, petHeight, petWeight, Arrays.toString(petPhoto), petDescription);
+        return String.format("Pet{petName='%s', petDescription='%s', owner=%s, localization=%s}", petName, petDescription, owner, localization);
     }
 }
