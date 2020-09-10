@@ -13,13 +13,6 @@ public abstract class AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public AbstractEntity() {
-    }
-
-    public AbstractEntity(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
