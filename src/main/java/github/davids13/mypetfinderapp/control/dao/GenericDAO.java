@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.stream.Stream;
 
-@Stateless
+@Stateless // The server it's responsible for the transactions (EJB)
 public class GenericDAO {
 
     private static final String PERSISTENT_UNIT = "petFinder_PU";
@@ -21,7 +21,11 @@ public class GenericDAO {
         entityManager.persist(object);
     }
 
-    public Stream<?> getAll(final String queryName, final Class<?> clazz) {
+    public <T extends AbstractEntity> T findById(final Class<T> clazz, final Integer id) {
+        return entityManager.find(clazz, id);
+    }
+
+    public Stream<?> findAll(final String queryName, final Class<?> clazz) {
         TypedQuery<?> query = entityManager.createNamedQuery(queryName, clazz);
         return query.getResultStream();
     }
