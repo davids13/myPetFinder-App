@@ -76,7 +76,7 @@ public class Pet extends AbstractEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), petName, petDescription, owner, localization);
+        return Objects.hash(petName, petDescription, owner, localization);
     }
 
     @Override
