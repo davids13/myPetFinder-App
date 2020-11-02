@@ -2,6 +2,7 @@ package github.davids13.mypetfinderapp.boundary;
 
 import github.davids13.mypetfinderapp.control.service.PetService;
 import github.davids13.mypetfinderapp.entity.Owner;
+import github.davids13.mypetfinderapp.entity.Pet;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;
@@ -32,15 +33,14 @@ public class PetResource {
     @Path("/owner/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOwner(@PathParam("id") Integer id) {
-        //LOG.log(Level.FINE, "REST request to get Person : {0}", id);
-        Owner owner = null;
+        Owner owner;
         if (id == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } else {
             owner = petService.find(id);
         }
 
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity(owner).build();
     }
 
     @POST
@@ -56,4 +56,15 @@ public class PetResource {
         return Response.status(Response.Status.CREATED).entity(owner).build();
     }
 
+    @GET
+    @Path("/pets")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllPets() {
+        final List<Pet> pets = petService.findAllPets();
+        if (pets.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(pets).build();
+    }
 }
