@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
 
-    <persistence-unit name="petFinder_PU" transaction-type="JTA">
+    <persistence-unit name="petFinder_PU" transaction-type="JTA"> <!-- JTA the server it will take over -->
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/petfinderdb</jta-data-source>
         <class>github.davids13.mypetfinderapp.entity.Owner</class>
@@ -16,7 +16,7 @@
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="postgres"/>
 
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.naming.implicit-strategy"
                       value="org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl"/>
