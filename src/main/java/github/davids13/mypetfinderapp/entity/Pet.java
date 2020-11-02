@@ -4,23 +4,28 @@ import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "pets")
 @NamedQuery(name = Pet.PET_FIND_ALL, query = Pet.PET_FIND_ALL_QUERY)
 public class Pet extends AbstractEntity implements Serializable {
+    /*
+        - MANY pets could be associated to ONE owner
+        - this class has the relationship  (has the FK)
+    */
 
     public static final String PET_FIND_ALL = "Pet.findAll";
     public static final String PET_FIND_ALL_QUERY = "SELECT p FROM Pet p";
+    public static final String PET_OWNER_FIND_ALL_QUERY = "SELECT p FROM Pet p JOIN Owner o ON p.id=o.id";
 
     @Column(name = "pet_name")
     private String petName;
     @Column(name = "pet_description")
     private String petDescription;
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
+    @JoinColumn(name = "ownerid", nullable = false)
     private Owner owner;
     @ManyToMany
     @JoinTable(
@@ -28,7 +33,7 @@ public class Pet extends AbstractEntity implements Serializable {
             joinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "localization_id", referencedColumnName = "id")
     )
-    private Set<Localization> localization;
+    private List<Localization> localization;
 
     public String getPetName() {
         return petName;
@@ -54,11 +59,11 @@ public class Pet extends AbstractEntity implements Serializable {
         this.owner = owner;
     }
 
-    public Set<Localization> getLocalization() {
+    public List<Localization> getLocalization() {
         return localization;
     }
 
-    public void setLocalization(Set<Localization> localization) {
+    public void setLocalization(List<Localization> localization) {
         this.localization = localization;
     }
 
@@ -76,7 +81,7 @@ public class Pet extends AbstractEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(petName, petDescription, owner, localization);
+        return Objects.hash(super.hashCode(), petDescription, owner, localization);
     }
 
     @Override
