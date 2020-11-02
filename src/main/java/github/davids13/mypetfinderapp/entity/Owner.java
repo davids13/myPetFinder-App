@@ -3,30 +3,34 @@ package github.davids13.mypetfinderapp.entity;
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "owners")
 @NamedQuery(name = Owner.OWNER_FIND_ALL, query = Owner.OWNER_FIND_ALL_QUERY)
 public class Owner extends AbstractEntity implements Serializable {
+    /*
+        - ONE owner could have MANY pets
+        - this class is a Non-Owner of the relationship (doesnt have the FK)
+        - mappedBy is required for bidirectional associations on the Non-Owner
+    */
 
     public static final String OWNER_FIND_ALL = "Owner.findAll";
     public static final String OWNER_FIND_ALL_QUERY = "SELECT o FROM Owner o";
+    public static final String OWNER_PET_FIND_ALL_QUERY = "SELECT o FROM Owner o JOIN Pet p ON o.id=p.id";
 
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
     @Column
-    @Email
     private String email;
     @Column
     private String phone;
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "owner")
-    private Set<Pet> pet;
+    private List<Pet> pet;
 
     public String getFirstName() {
         return firstName;
@@ -60,11 +64,11 @@ public class Owner extends AbstractEntity implements Serializable {
         this.phone = phone;
     }
 
-    public Set<Pet> getPet() {
+    public List<Pet> getPet() {
         return pet;
     }
 
-    public void setPet(Set<Pet> pet) {
+    public void setPet(List<Pet> pet) {
         this.pet = pet;
     }
 
