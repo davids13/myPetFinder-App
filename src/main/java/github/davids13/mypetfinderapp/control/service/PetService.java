@@ -3,6 +3,7 @@ package github.davids13.mypetfinderapp.control.service;
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 import github.davids13.mypetfinderapp.control.dao.GenericDAO;
 import github.davids13.mypetfinderapp.entity.Owner;
+import github.davids13.mypetfinderapp.entity.Pet;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -37,4 +38,12 @@ public class PetService {
         return ownerStream.collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Pet> findAllPets() {
+        final Stream<Pet> petStream = (Stream<Pet>) genericDAO.findAll(Pet.PET_FIND_ALL, Pet.class);
+        if (petStream == null)
+            return Collections.emptyList();
+
+        return petStream.collect(Collectors.toList());
+    }
 }
