@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,14 +69,28 @@ public class PetResource {
     @Path("/owner/{id}/createPet")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createPet(@PathParam("id") Integer id, final Pet pet) {
+    public Response createPetByOwner(@PathParam("id") Integer id, final Pet pet) {
         final Optional<Owner> ownerOptional = Optional.ofNullable(petService.find(id));
         if (!ownerOptional.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         final Owner owner = ownerOptional.get();
         pet.setOwner(owner);
-        petService.create(owner);
-        return Response.status(Response.Status.CREATED).entity(owner).build();
+        owner.setPet(Collections.singletonList(pet));
+        petService.create(pet);
+        return Response.status(Response.Status.CREATED).entity(pet).build();
+    }
+
+    @POST
+    @Path("/createPet")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createPet(final Optional<Pet> petOptional) {
+        if (!petOptional.isPresent())
+            throw new WebApplicationException((Response.status(Response.Status.NOT_ACCEPTABLE).build()));
+
+        final Pet pet = petOptional.get();
+        petService.create(pet);
+        return Response.status(Response.Status.CREATED).entity(pet).build();
     }
 }
