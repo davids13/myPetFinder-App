@@ -23,7 +23,7 @@ public class PetResource {
     @GET
     @Path("/owners")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllOwners() {
+    public Response retrieveAllOwners() {
         final Optional<List<Owner>> owners = Optional.ofNullable(petService.findAll());
         if (!owners.isPresent())
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -32,9 +32,9 @@ public class PetResource {
     }
 
     @GET
-    @Path("/owner/{id}")
+    @Path("/owners/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOwner(@PathParam("id") Integer id) {
+    public Response retrieveOwner(@PathParam("id") Integer id) {
         final Optional<Owner> owner = Optional.ofNullable(petService.find(id));
         if (!owner.isPresent())
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -42,8 +42,13 @@ public class PetResource {
         return Response.status(Response.Status.OK).entity(owner.get()).build();
     }
 
+    /*
+    we will retrieve all the posts of a specific user.
+        users/{id}/posts"
+     */
+
     @POST
-    @Path("/createOwner")
+    @Path("/createOwners")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createOwner(final Owner owner) {
@@ -66,7 +71,7 @@ public class PetResource {
     }
 
     @POST
-    @Path("/owner/{id}/createPet")
+    @Path("/owners/{id}/createPets")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPetByOwner(@PathParam("id") Integer id, final Pet pet) {
@@ -75,14 +80,14 @@ public class PetResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         final Owner owner = ownerOptional.get();
-        pet.setOwner(owner);
         owner.setPet(Collections.singletonList(pet));
+        pet.setOwner(owner);
         petService.create(pet);
         return Response.status(Response.Status.CREATED).entity(pet).build();
     }
 
     @POST
-    @Path("/createPet")
+    @Path("/createPets")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPet(final Optional<Pet> petOptional) {
