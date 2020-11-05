@@ -4,7 +4,6 @@ import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,16 +23,17 @@ public class Pet extends AbstractEntity implements Serializable {
     private String petName;
     @Column(name = "pet_description")
     private String petDescription;
-    @ManyToOne
-    @JoinColumn(name = "ownerid", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ownerid")
     private Owner owner;
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "pet_localization",
             joinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "localization_id", referencedColumnName = "id")
     )
     private List<Localization> localization;
+    */
 
     public String getPetName() {
         return petName;
@@ -59,14 +59,6 @@ public class Pet extends AbstractEntity implements Serializable {
         this.owner = owner;
     }
 
-    public List<Localization> getLocalization() {
-        return localization;
-    }
-
-    public void setLocalization(List<Localization> localization) {
-        this.localization = localization;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,17 +67,16 @@ public class Pet extends AbstractEntity implements Serializable {
         Pet pet = (Pet) o;
         return Objects.equals(petName, pet.petName) &&
                 Objects.equals(petDescription, pet.petDescription) &&
-                Objects.equals(owner, pet.owner) &&
-                Objects.equals(localization, pet.localization);
+                Objects.equals(owner, pet.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), petDescription, owner, localization);
+        return Objects.hash(super.hashCode(), petName, petDescription, owner);
     }
 
     @Override
     public String toString() {
-        return String.format("Pet{petName='%s', petDescription='%s', owner=%s, localization=%s}", petName, petDescription, owner, localization);
+        return String.format("Pet{petName='%s', petDescription='%s', owner=%s}", petName, petDescription, owner);
     }
 }
