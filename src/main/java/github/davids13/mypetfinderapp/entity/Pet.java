@@ -2,14 +2,14 @@ package github.davids13.mypetfinderapp.entity;
 
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "pets")
 @NamedQuery(name = Pet.PET_FIND_ALL, query = Pet.PET_FIND_ALL_QUERY)
-public class Pet extends AbstractEntity implements Serializable {
+public class Pet extends AbstractEntity {
     /*
         - MANY pets could be associated to ONE owner
         - this class has the relationship  (has the FK)
@@ -20,13 +20,17 @@ public class Pet extends AbstractEntity implements Serializable {
     public static final String PET_OWNER_FIND_ALL_QUERY = "SELECT p FROM Pet p JOIN Owner o ON p.id=o.id";
 
     @Column(name = "pet_name")
+    @JsonbProperty("the pet name")
     private String petName;
     @Column(name = "pet_description")
     private String petDescription;
+    @JsonbTransient
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ownerid")
+    @JoinColumn(name = "ownerid", referencedColumnName = "id")
     private Owner owner;
-    /*@ManyToMany
+
+    /*
+    @ManyToMany
     @JoinTable(
             name = "pet_localization",
             joinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"),
@@ -57,22 +61,6 @@ public class Pet extends AbstractEntity implements Serializable {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Pet pet = (Pet) o;
-        return Objects.equals(petName, pet.petName) &&
-                Objects.equals(petDescription, pet.petDescription) &&
-                Objects.equals(owner, pet.owner);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), petName, petDescription, owner);
     }
 
     @Override
