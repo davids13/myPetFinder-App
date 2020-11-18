@@ -37,11 +37,6 @@ public class Owner extends AbstractEntity {
     */
 
     // Helper method for bidirectional associations
-    /*public void addPet(final Pet pets) {
-        pet.setOwner(this);
-        this.pet.add(pet);
-    }*/
-
     public void addPet(final Pet pets) {
         pet.add(pets);
         pets.setOwner(this);
