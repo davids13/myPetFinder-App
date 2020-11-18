@@ -31,12 +31,11 @@ public class Owner extends AbstractEntity {
     private List<Pet> pet;
 
     /*
-    we still need to have both sides in sync as otherwise,
-    we break the Domain Model relationship consistency,
-    and the entity state transitions are not guaranteed to work unless both sides are properly synchronized.
+    Helper method for bidirectional associations:
+        We still need to have both sides in sync as otherwise,
+        we break the Domain Model relationship consistency,
+        and the entity state transitions are not guaranteed to work unless both sides are properly synchronized.
     */
-
-    // Helper method for bidirectional associations
     public void addPet(final Pet pets) {
         pet.add(pets);
         pets.setOwner(this);
