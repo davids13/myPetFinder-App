@@ -3,14 +3,12 @@ package github.davids13.mypetfinderapp.entity;
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "owners")
 @NamedQuery(name = Owner.OWNER_FIND_ALL, query = Owner.OWNER_FIND_ALL_QUERY)
-public class Owner extends AbstractEntity implements Serializable {
+public class Owner extends AbstractEntity {
     /*
         - ONE owner could have MANY pets
         - this class is a Non-Owner of the relationship (doesnt have the FK)
@@ -29,8 +27,30 @@ public class Owner extends AbstractEntity implements Serializable {
     private String email;
     @Column
     private String phone;
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<Pet> pet;
+
+    /*
+    we still need to have both sides in sync as otherwise,
+    we break the Domain Model relationship consistency,
+    and the entity state transitions are not guaranteed to work unless both sides are properly synchronized.
+    */
+
+    // Helper method for bidirectional associations
+    /*public void addPet(final Pet pets) {
+        pet.setOwner(this);
+        this.pet.add(pet);
+    }*/
+
+    public void addPet(final Pet pets) {
+        pet.add(pets);
+        pets.setOwner(this);
+    }
+
+    public void removePet(final Pet pets) {
+        pet.remove(pets);
+        this.setPet(null);
+    }
 
     public String getFirstName() {
         return firstName;
@@ -70,24 +90,6 @@ public class Owner extends AbstractEntity implements Serializable {
 
     public void setPet(List<Pet> pet) {
         this.pet = pet;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Owner owner = (Owner) o;
-        return Objects.equals(firstName, owner.firstName) &&
-                Objects.equals(lastName, owner.lastName) &&
-                Objects.equals(email, owner.email) &&
-                Objects.equals(phone, owner.phone) &&
-                Objects.equals(pet, owner.pet);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), firstName, lastName, email, phone, pet);
     }
 
     @Override
