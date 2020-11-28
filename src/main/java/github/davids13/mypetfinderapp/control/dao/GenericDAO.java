@@ -21,6 +21,14 @@ public class GenericDAO {
         entityManager.persist(object);
     }
 
+    public <T extends AbstractEntity> void delete(final T object) {
+        entityManager.remove(object);
+    }
+
+    public <T extends AbstractEntity> void update(final T object) {
+        entityManager.merge(object);
+    }
+
     public <T extends AbstractEntity> T findById(final Class<T> clazz, final Integer id) {
         return entityManager.find(clazz, id);
     }
