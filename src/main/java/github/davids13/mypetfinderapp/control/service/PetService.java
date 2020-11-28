@@ -20,6 +20,10 @@ public class PetService {
         genericDAO.save(t);
     }
 
+    public <T extends AbstractEntity> void modify(final T t) {
+        genericDAO.update(t);
+    }
+
     // Owner
     public Owner find(final Integer id) {
         if (id == null) {
@@ -36,6 +40,15 @@ public class PetService {
             return Collections.emptyList();
 
         return ownerStream.collect(Collectors.toList());
+    }
+
+    // Pet
+    public Pet findPet(final Integer id) {
+        if (id == null) {
+            return null;
+        }
+
+        return genericDAO.findById(Pet.class, id);
     }
 
     @SuppressWarnings("unchecked")
