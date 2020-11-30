@@ -9,14 +9,13 @@
         <jta-data-source>java:app/jdbc/petfinderdb</jta-data-source>
         <class>github.davids13.mypetfinderapp.entity.Owner</class>
         <class>github.davids13.mypetfinderapp.entity.Pet</class>
-        <class>github.davids13.mypetfinderapp.entity.Localization</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/petfinderdb"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="postgres"/>
 
-            <property name="eclipselink.ddl-generation" value="none"/>
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.naming.implicit-strategy"
                       value="org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl"/>
