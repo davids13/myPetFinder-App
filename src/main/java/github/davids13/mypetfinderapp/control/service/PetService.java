@@ -16,12 +16,12 @@ public class PetService {
     @Inject
     private GenericDAO genericDAO;
 
-    public <T extends AbstractEntity> void create(final T t) {
-        genericDAO.save(t);
+    public <T extends AbstractEntity> void create(final T object) {
+        genericDAO.save(object);
     }
 
-    public <T extends AbstractEntity> void modify(final T t) {
-        genericDAO.update(t);
+    public <T extends AbstractEntity> void modify(final T object) {
+        genericDAO.update(object);
     }
 
     // Owner
