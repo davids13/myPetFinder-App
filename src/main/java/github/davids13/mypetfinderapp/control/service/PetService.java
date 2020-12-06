@@ -24,6 +24,10 @@ public class PetService {
         genericDAO.update(object);
     }
 
+    public <T extends AbstractEntity> void remove(final T object) {
+        genericDAO.delete(object);
+    }
+
     // Owner
     public Owner find(final Integer id) {
         if (id == null) {
