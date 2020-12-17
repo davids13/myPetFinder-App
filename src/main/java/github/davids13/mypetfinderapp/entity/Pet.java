@@ -5,6 +5,7 @@ import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "pets")
@@ -12,22 +13,25 @@ import javax.persistence.*;
 public class Pet extends AbstractEntity {
     /*
         - MANY pets could be associated to ONE owner
-        - this class has the relationship  (has the FK)
+        - this class owns the relationship  (has the FK)
     */
 
     public static final String PET_FIND_ALL = "Pet.findAll";
     public static final String PET_FIND_ALL_QUERY = "SELECT p FROM Pet p";
     public static final String PET_OWNER_FIND_ALL_QUERY = "SELECT p FROM Pet p JOIN Owner o ON p.id=o.id";
 
+    @JsonbProperty("Your Pet Name")
     @Column(name = "pet_name")
-    @JsonbProperty("the pet name")
     private String petName;
     @Column(name = "pet_description")
     private String petDescription;
     @JsonbTransient
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ownerid", referencedColumnName = "id")
     private Owner owner;
+
+    public Pet() {
+    }
 
     /*
     @ManyToMany
@@ -61,6 +65,19 @@ public class Pet extends AbstractEntity {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pet pet = (Pet) o;
+        return Objects.equals(petName, pet.petName) && Objects.equals(petDescription, pet.petDescription) && Objects.equals(owner, pet.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(petName, petDescription, owner);
     }
 
     @Override
