@@ -71,13 +71,14 @@ public class Pet extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Pet pet = (Pet) o;
         return Objects.equals(petName, pet.petName) && Objects.equals(petDescription, pet.petDescription) && Objects.equals(owner, pet.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(petName, petDescription, owner);
+        return Objects.hash(super.hashCode(), petName, petDescription, owner);
     }
 
     @Override
