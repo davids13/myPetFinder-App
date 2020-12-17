@@ -3,6 +3,7 @@ package github.davids13.mypetfinderapp.entity;
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,17 +29,24 @@ public class Owner extends AbstractEntity {
     @Column
     private String phone;
     @OneToMany(mappedBy = "owner", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<Pet> pet;
+    private List<Pet> pet = new ArrayList<>();
+
+    public Owner() {
+    }
 
     /*
-    Helper method for bidirectional associations:
-        We still need to have both sides in sync as otherwise,
-        we break the Domain Model relationship consistency,
-        and the entity state transitions are not guaranteed to work unless both sides are properly synchronized.
+        Helper method for bidirectional associations:
+            We still need to have both sides in sync as otherwise,
+            we break the Domain Model relationship consistency,
+            and the entity state transitions are not guaranteed to work unless both sides are properly synchronized.
     */
+    // utility method to update both sides of the association
     public void addPet(final Pet pets) {
-        pet.add(pets);
         pets.setOwner(this);
+        //this.getPet().add(pets);
+
+        // Update the pet entity instance to refer to this owner
+        pet.add(pets);
     }
 
     public void removePet(final Pet pets) {
