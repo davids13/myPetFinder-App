@@ -28,10 +28,10 @@ public class PetService {
         genericDAO.delete(object);
     }
 
-    // Owner
-    public Owner find(final Integer id) {
+    public Owner findOwner(final Integer id) {
         if (id == null) {
             return null;
+            //throw new CustomException("SERVICE PET ERROR MSG INFO:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND, PetErrorDescription.PET_ERROR_1, "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
         }
 
         return genericDAO.findById(Owner.class, id);
@@ -46,7 +46,6 @@ public class PetService {
         return ownerStream.collect(Collectors.toList());
     }
 
-    // Pet
     public Pet findPet(final Integer id) {
         if (id == null) {
             return null;
