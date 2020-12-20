@@ -31,14 +31,13 @@ public class PetService {
     public Owner findOwner(final Integer id) {
         if (id == null) {
             return null;
-            //throw new CustomException("SERVICE PET ERROR MSG INFO:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND, PetErrorDescription.PET_ERROR_1, "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
         }
 
         return genericDAO.findById(Owner.class, id);
     }
 
     @SuppressWarnings("unchecked")
-    public List<Owner> findAll() {
+    public List<Owner> findAllOwners() {
         final Stream<Owner> ownerStream = (Stream<Owner>) genericDAO.findAll(Owner.OWNER_FIND_ALL, Owner.class);
         if (ownerStream == null)
             return Collections.emptyList();
