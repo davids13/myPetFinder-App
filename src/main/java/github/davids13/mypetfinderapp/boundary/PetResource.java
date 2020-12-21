@@ -1,5 +1,8 @@
 package github.davids13.mypetfinderapp.boundary;
 
+import github.davids13.mypetfinderapp.commons.errors.CustomException;
+import github.davids13.mypetfinderapp.commons.errors.type.PetErrorCode;
+import github.davids13.mypetfinderapp.commons.errors.type.PetErrorDescription;
 import github.davids13.mypetfinderapp.control.mapping.MyPetFinderMapper;
 import github.davids13.mypetfinderapp.control.service.PetService;
 import github.davids13.mypetfinderapp.entity.Owner;
@@ -8,12 +11,10 @@ import github.davids13.mypetfinderapp.entity.Pet;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
-import java.util.Collections;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,8 @@ import java.util.Optional;
 @Stateful
 public class PetResource {
 
-    // TODO: create a helper method to perform the validations
-
+    // TODO: create a helper method to perform the validations // add page size // work on custom exception handler // entities hashcode error // security // cache // http content negotiations
+    // TODO: https://trello.com/b/y1DjpRyO/davids-kb
     @Inject
     private PetService petService;
 
@@ -39,24 +40,48 @@ public class PetResource {
     @Path("owners")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllOwners() {
-        final Optional<List<Owner>> owners = Optional.ofNullable(petService.findAll());
+        final Optional<List<Owner>> owners = Optional.ofNullable(petService.findAllOwners());
         if (owners.isEmpty())
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NO_CONTENT).build();
 
         return Response.ok(owners.get()).build();
     }
 
-    /*@GET
+    @GET
     @Path("owners/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveOwner(@PathParam("id") final Integer id) throws ExceptionResponse {
-        final Optional<Owner> owner = Optional.ofNullable(petService.find(id));
-        if (!owner.isPresent())
-            //return Response.status(Response.Status.NOT_FOUND).build();
-            throw new ExceptionResponse("NOT FOUND THIS MOCK USER", new Date(), Response.Status.BAD_REQUEST.toString());
+    public Response retrieveOwner(@PathParam("id") final Integer id/*, @CookieParam("id") final Cookie id*/) {
+        //final Optional<Owner> owner = Optional.ofNullable(petService.findOwner(id));
+        final Owner owner = petService.findOwner(id);
 
-        return Response.status(Response.Status.OK).entity(owner.get()).build();
-    }*/
+        // Caching
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setMaxAge(300);
+        cacheControl.setPrivate(true);
+        cacheControl.setNoStore(false);
+        final Response.ResponseBuilder responseBuilder = Response.ok(owner, MediaType.APPLICATION_JSON);
+
+
+        //if (owner.isEmpty())
+        //return Response.status(Response.Status.NOT_FOUND).build();
+        if (owner == null) {
+            throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
+            //throw new WebApplicationException(Response.Status.NOT_FOUND);
+
+        }
+
+        //return Response.status(Response.Status.OK).entity(owner.get()).build();
+        //return Response.status(Response.Status.OK).entity(owner).build();
+        return responseBuilder.build();
+    }
+
+    public String currentDateAndTime() {
+        final Date date = new Date();
+        final String FORMAT_DATE = "yyyy.M.d 'at' HH:mm:ss z";
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_DATE);
+
+        return simpleDateFormat.format(date);
+    }
 
     @POST
     @Path("owners")
@@ -82,7 +107,7 @@ public class PetResource {
         // null => not found
         // void => no content,
 
-        Optional<Owner> ownerOptional = Optional.ofNullable(petService.find(id));
+        Optional<Owner> ownerOptional = Optional.ofNullable(petService.findOwner(id));
         if (ownerOptional.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -92,6 +117,8 @@ public class PetResource {
         petService.modify(ownerUpdated);
 
         return Response.created(uri).build();
+        // return Response.created(URI.create("/customers/"
+        //+ customer.getId())).build();
     }
 
     @DELETE
@@ -99,12 +126,12 @@ public class PetResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteOwner(@PathParam("id") final Integer id) {
         if (id == null)
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
 
-        final Optional<Owner> owner = Optional.ofNullable(petService.find(id));
+        final Optional<Owner> owner = Optional.ofNullable(petService.findOwner(id));
 
         if (owner.isEmpty())
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
 
         petService.remove(owner.get());
         return Response.status(Response.Status.OK).build();
@@ -137,14 +164,14 @@ public class PetResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPetByOwner(@PathParam("id") Integer id, final Pet pet) {
-        final Optional<Owner> ownerOptional = Optional.ofNullable(petService.find(id));
+        final Optional<Owner> ownerOptional = Optional.ofNullable(petService.findOwner(id));
         if (ownerOptional.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         final Owner owner = ownerOptional.get();
         //pet.setOwner(owner);
-        owner.setPet(Collections.singletonList(pet));
-        //owner.addPet(pet);
+        //owner.setPet(Arrays.asList(pet));
+        owner.addPet(pet);
         petService.create(pet);
         return Response.status(Response.Status.CREATED).entity(pet).build();
     }
@@ -173,4 +200,5 @@ public class PetResource {
         petService.remove(pet.get());
         return Response.status(Response.Status.OK).build();
     }
+
 }
