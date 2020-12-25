@@ -41,3 +41,17 @@ Psrc/main/java/github/davids13/mypetfinderapp/commons/errors/ExceptionMapper.jav
 Vsrc/main/java/github/davids13/mypetfinderapp/commons/errors/CustomExceptionMapper.java,6\e\6e0c5d1d221a24f076f8fac579a9ebe1a64d97c6
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+S
+#src/main/resources/error-fields.txt,d\7\d7653282f481e00bab46710861175b27cea08947
+f
+6target/classes/META-INF/microprofile-config.properties,2\5\25d83dd918afdbdf96278b1bb495730bc6bb0467
+W
+'target/classes/META-INF/persistence.xml,6\b\6b218a32634615b1febcb25205c6f5e1216f1034
+Z
+*target/myPetFinderApp/META-INF/MANIFEST.MF,c\b\cb53f4c368ef33cfcdaa8a3a374c75a73766ce20
+}
+Mtarget/myPetFinderApp/WEB-INF/classes/META-INF/microprofile-config.properties,0\6\0637057c5b25437f4d41ea29052fccb7bf280093
+n
+>target/myPetFinderApp/WEB-INF/classes/META-INF/persistence.xml,7\9\79e0e660e4c4d9db240f2679159e74d5b5289097
+x
+Hsrc/main/java/github/davids13/mypetfinderapp/commons/errors/Testing.java,f\8\f803fa6812d49068f2217d2bc0db2d700fc46eaa
