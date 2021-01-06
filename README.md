@@ -1,6 +1,6 @@
 # myPetFinderApp
 
-This is a community application to provide a platform where the owners can register they lost pet.
+This is a community application to provide a platform where the owners can register their lost pet.
 
 Further the intent is to add more functionalities to the application like a space where anybody can see all pet's info and start the adoption process.
 
