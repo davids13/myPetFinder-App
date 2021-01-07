@@ -21,7 +21,7 @@
         <javaee.api.version>8.0.1</javaee.api.version>
         <javax.ejb.api.version>3.2.2</javax.ejb.api.version>
         <!-- Database -->
-        <postgres.version>42.2.14</postgres.version>
+        <postgres.version>42.2.18</postgres.version>
         <!-- JPA -->
         <jpa.api.version>2.2</jpa.api.version>
         <eclipselink.jpa.version>2.7.6</eclipselink.jpa.version>
