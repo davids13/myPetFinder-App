@@ -24,6 +24,7 @@
         <postgres.version>42.2.18</postgres.version>
         <!-- JPA -->
         <jpa.api.version>2.2</jpa.api.version>
+        <!-- ORM -->
         <eclipselink.jpa.version>2.7.6</eclipselink.jpa.version>
         <eclipselink.version>3.0.0-M1</eclipselink.version>
         <!-- Unit Tests -->
@@ -53,12 +54,13 @@
             <artifactId>postgresql</artifactId>
             <version>${postgres.version}</version>
         </dependency>
-        <!-- ORM -->
+        <!-- JPA -->
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>${jpa.api.version}</version>
         </dependency>
+        <!-- ORM -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
