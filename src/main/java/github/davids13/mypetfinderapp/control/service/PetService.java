@@ -1,7 +1,7 @@
 package github.davids13.mypetfinderapp.control.service;
 
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
-import github.davids13.mypetfinderapp.control.dao.GenericDAO;
+import github.davids13.mypetfinderapp.control.dao.IGenericDAO;
 import github.davids13.mypetfinderapp.entity.Owner;
 import github.davids13.mypetfinderapp.entity.Pet;
 
@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PetService {
+public class PetService implements IPetService {
 
     @Inject
-    private GenericDAO genericDAO;
+    private IGenericDAO iGenericDAO;
 
     public <T extends AbstractEntity> void create(final T object) {
-        genericDAO.save(object);
+        iGenericDAO.save(object);
     }
 
     public <T extends AbstractEntity> void modify(final T object) {
-        genericDAO.update(object);
+        iGenericDAO.update(object);
     }
 
     public <T extends AbstractEntity> void remove(final T object) {
-        genericDAO.delete(object);
+        iGenericDAO.delete(object);
     }
 
     public Owner findOwner(final Integer id) {
@@ -33,12 +33,12 @@ public class PetService {
             return null;
         }
 
-        return genericDAO.findById(Owner.class, id);
+        return iGenericDAO.findById(Owner.class, id);
     }
 
     @SuppressWarnings("unchecked")
     public List<Owner> findAllOwners() {
-        final Stream<Owner> ownerStream = (Stream<Owner>) genericDAO.findAll(Owner.OWNER_FIND_ALL, Owner.class);
+        final Stream<Owner> ownerStream = (Stream<Owner>) iGenericDAO.findAll(Owner.OWNER_FIND_ALL, Owner.class);
         if (ownerStream == null)
             return Collections.emptyList();
 
@@ -50,12 +50,12 @@ public class PetService {
             return null;
         }
 
-        return genericDAO.findById(Pet.class, id);
+        return iGenericDAO.findById(Pet.class, id);
     }
 
     @SuppressWarnings("unchecked")
     public List<Pet> findAllPets() {
-        final Stream<Pet> petStream = (Stream<Pet>) genericDAO.findAll(Pet.PET_FIND_ALL, Pet.class);
+        final Stream<Pet> petStream = (Stream<Pet>) iGenericDAO.findAll(Pet.PET_FIND_ALL, Pet.class);
         if (petStream == null)
             return Collections.emptyList();
 
