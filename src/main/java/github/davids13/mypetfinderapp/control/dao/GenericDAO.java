@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.stream.Stream;
 
 @Stateless // The server it's responsible for the transactions (EJB)
-public class GenericDAO {
+public class GenericDAO implements IGenericDAO {
 
     private static final String PERSISTENT_UNIT = "petFinder_PU";
 
