@@ -4,7 +4,7 @@ import github.davids13.mypetfinderapp.commons.errors.CustomException;
 import github.davids13.mypetfinderapp.commons.errors.type.PetErrorCode;
 import github.davids13.mypetfinderapp.commons.errors.type.PetErrorDescription;
 import github.davids13.mypetfinderapp.control.mapping.MyPetFinderMapper;
-import github.davids13.mypetfinderapp.control.service.PetService;
+import github.davids13.mypetfinderapp.control.service.IPetService;
 import github.davids13.mypetfinderapp.entity.Owner;
 import github.davids13.mypetfinderapp.entity.Pet;
 
@@ -25,7 +25,7 @@ public class PetResource {
     // TODO: create a helper method to perform the validations // add page size // work on custom exception handler // entities hashcode error // security // cache // http content negotiations
     // TODO: https://trello.com/b/y1DjpRyO/davids-kb
     @Inject
-    private PetService petService;
+    private IPetService iPetService;
 
     @Inject
     private MyPetFinderMapper myPetFinderMapper;
@@ -40,7 +40,7 @@ public class PetResource {
     @Path("owners")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllOwners() {
-        final Optional<List<Owner>> owners = Optional.ofNullable(petService.findAllOwners());
+        final Optional<List<Owner>> owners = Optional.ofNullable(iPetService.findAllOwners());
         if (owners.isEmpty())
             return Response.status(Response.Status.NO_CONTENT).build();
 
@@ -52,7 +52,7 @@ public class PetResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveOwner(@PathParam("id") final Integer id/*, @CookieParam("id") final Cookie id*/) {
         //final Optional<Owner> owner = Optional.ofNullable(petService.findOwner(id));
-        final Owner owner = petService.findOwner(id);
+        final Owner owner = iPetService.findOwner(id);
 
         // Caching
         final CacheControl cacheControl = new CacheControl();
@@ -91,7 +91,7 @@ public class PetResource {
         if (owner.getFirstName().isEmpty() || owner.getLastName().isEmpty() || owner.getEmail().isEmpty() || owner.getPhone().isEmpty())
             throw new WebApplicationException((Response.status(Response.Status.NOT_ACCEPTABLE).build()));
 
-        petService.create(owner);
+        iPetService.create(owner);
         return Response.status(Response.Status.CREATED).entity(owner).build();
     }
 
@@ -107,14 +107,14 @@ public class PetResource {
         // null => not found
         // void => no content,
 
-        Optional<Owner> ownerOptional = Optional.ofNullable(petService.findOwner(id));
+        Optional<Owner> ownerOptional = Optional.ofNullable(iPetService.findOwner(id));
         if (ownerOptional.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         final Owner ownerUpdated = myPetFinderMapper.mappingUpdate(owner, id);
 
-        petService.modify(ownerUpdated);
+        iPetService.modify(ownerUpdated);
 
         return Response.created(uri).build();
         // return Response.created(URI.create("/customers/"
@@ -128,12 +128,12 @@ public class PetResource {
         if (id == null)
             throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
 
-        final Optional<Owner> owner = Optional.ofNullable(petService.findOwner(id));
+        final Optional<Owner> owner = Optional.ofNullable(iPetService.findOwner(id));
 
         if (owner.isEmpty())
             throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
 
-        petService.remove(owner.get());
+        iPetService.remove(owner.get());
         return Response.status(Response.Status.OK).build();
     }
 
@@ -141,7 +141,7 @@ public class PetResource {
     @Path("pets")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllPets() {
-        final Optional<List<Pet>> pets = Optional.ofNullable(petService.findAllPets());
+        final Optional<List<Pet>> pets = Optional.ofNullable(iPetService.findAllPets());
         if (pets.isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
 
@@ -152,7 +152,7 @@ public class PetResource {
     @Path("pets/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrievePet(@PathParam("id") final Integer id) {
-        final Optional<Pet> pet = Optional.ofNullable(petService.findPet(id));
+        final Optional<Pet> pet = Optional.ofNullable(iPetService.findPet(id));
         if (pet.isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
 
@@ -164,7 +164,7 @@ public class PetResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPetByOwner(@PathParam("id") Integer id, final Pet pet) {
-        final Optional<Owner> ownerOptional = Optional.ofNullable(petService.findOwner(id));
+        final Optional<Owner> ownerOptional = Optional.ofNullable(iPetService.findOwner(id));
         if (ownerOptional.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -172,7 +172,7 @@ public class PetResource {
         //pet.setOwner(owner);
         //owner.setPet(Arrays.asList(pet));
         owner.addPet(pet);
-        petService.create(pet);
+        iPetService.create(pet);
         return Response.status(Response.Status.CREATED).entity(pet).build();
     }
 
@@ -192,12 +192,12 @@ public class PetResource {
         if (id == null)
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
-        final Optional<Pet> pet = Optional.ofNullable(petService.findPet(id));
+        final Optional<Pet> pet = Optional.ofNullable(iPetService.findPet(id));
 
         if (pet.isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        petService.remove(pet.get());
+        iPetService.remove(pet.get());
         return Response.status(Response.Status.OK).build();
     }
 
