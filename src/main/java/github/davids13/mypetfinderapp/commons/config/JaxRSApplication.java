@@ -1,12 +1,7 @@
 package github.davids13.mypetfinderapp.commons.config;
 
-import github.davids13.mypetfinderapp.boundary.PetResource;
-import github.davids13.mypetfinderapp.commons.errors.CustomExceptionMapper;
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.util.HashSet;
-import java.util.Set;
 
 @ApplicationPath("api")
 public class JaxRSApplication extends Application {
@@ -34,7 +29,6 @@ public class JaxRSApplication extends Application {
         return String.format("JaxRSApplication{} %s", super.toString());
     }
     */
-
 
 
 }

@@ -66,13 +66,8 @@ public class PetResource {
         cacheControl.setNoStore(false);
         final Response.ResponseBuilder responseBuilder = Response.ok(owner, MediaType.APPLICATION_JSON);
 
-
-        //if (owner.isEmpty())
-        //return Response.status(Response.Status.NOT_FOUND).build();
         if (owner == null) {
             throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), petConfig.getErrorLinkDocumentation());
-            //throw new WebApplicationException(Response.Status.NOT_FOUND);
-
         }
 
         //return Response.status(Response.Status.OK).entity(owner.get()).build();
