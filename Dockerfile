@@ -1,5 +1,5 @@
 FROM payara/micro:jdk11
-MAINTAINER https://github.com/davids13
+LABEL key="https://github.com/davids13"
 USER root
 RUN mkdir ${PAYARA_HOME}/config
 COPY /ope/payara/domain.xml ${PAYARA_HOME}/config
