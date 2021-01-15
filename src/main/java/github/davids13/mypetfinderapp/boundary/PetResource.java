@@ -3,12 +3,13 @@ package github.davids13.mypetfinderapp.boundary;
 import github.davids13.mypetfinderapp.commons.errors.CustomException;
 import github.davids13.mypetfinderapp.commons.errors.type.PetErrorCode;
 import github.davids13.mypetfinderapp.commons.errors.type.PetErrorDescription;
+import github.davids13.mypetfinderapp.control.config.PetConfig;
 import github.davids13.mypetfinderapp.control.mapping.MyPetFinderMapper;
 import github.davids13.mypetfinderapp.control.service.IPetService;
 import github.davids13.mypetfinderapp.entity.Owner;
 import github.davids13.mypetfinderapp.entity.Pet;
 
-import javax.ejb.Stateful;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -19,7 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Path("")
-@Stateful
+//@Stateful
+@ApplicationScoped
 public class PetResource {
 
     // TODO: create a helper method to perform the validations // add page size // work on custom exception handler // entities hashcode error // security // cache // http content negotiations
@@ -29,6 +31,9 @@ public class PetResource {
 
     @Inject
     private MyPetFinderMapper myPetFinderMapper;
+
+    @Inject
+    private PetConfig petConfig;
 
     /**
      * Use uriInfo to get current context path and to build HATEOAS links
@@ -65,7 +70,7 @@ public class PetResource {
         //if (owner.isEmpty())
         //return Response.status(Response.Status.NOT_FOUND).build();
         if (owner == null) {
-            throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), "https://app.nuclino.com/illuminati-geeks/Illuminati-wrk-space/Error-Description-cf9f0f2e-7a38-4dc5-8c1e-25aae4b51fba");
+            throw new CustomException("RESOURCE:", currentDateAndTime(), Response.Status.NOT_FOUND.getStatusCode(), PetErrorCode.NOT_FOUND.getLabel(), PetErrorDescription.PET_ERROR_1.getLabel(), petConfig.getErrorLinkDocumentation());
             //throw new WebApplicationException(Response.Status.NOT_FOUND);
 
         }
@@ -73,14 +78,6 @@ public class PetResource {
         //return Response.status(Response.Status.OK).entity(owner.get()).build();
         //return Response.status(Response.Status.OK).entity(owner).build();
         return responseBuilder.build();
-    }
-
-    public String currentDateAndTime() {
-        final Date date = new Date();
-        final String FORMAT_DATE = "yyyy.M.d 'at' HH:mm:ss z";
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_DATE);
-
-        return simpleDateFormat.format(date);
     }
 
     @POST
@@ -178,8 +175,8 @@ public class PetResource {
 
     @PUT
     @Path("pets/{id}")
-    @Produces
-    @Consumes
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updatePet(@PathParam("id") final Integer id, final Pet pet) {
 
         return Response.status(Response.Status.OK).build();
@@ -201,4 +198,11 @@ public class PetResource {
         return Response.status(Response.Status.OK).build();
     }
 
+    private String currentDateAndTime() {
+        final Date date = new Date();
+        final String FORMAT_DATE = "yyyy.M.d 'at' HH:mm:ss z";
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_DATE);
+
+        return simpleDateFormat.format(date);
+    }
 }

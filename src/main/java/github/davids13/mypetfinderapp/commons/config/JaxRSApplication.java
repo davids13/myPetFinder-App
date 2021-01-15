@@ -10,7 +10,7 @@ import java.util.Set;
 
 @ApplicationPath("api")
 public class JaxRSApplication extends Application {
-
+/*
     private final Set<Object> singletons = new HashSet<Object>();
     private final Set<Class<?>> classes = new HashSet<Class<?>>();
 
@@ -33,4 +33,8 @@ public class JaxRSApplication extends Application {
     public String toString() {
         return String.format("JaxRSApplication{} %s", super.toString());
     }
+    */
+
+
+
 }
