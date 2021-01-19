@@ -46,3 +46,7 @@
         <description>Test DataSource jdbc/petfinderdb for Connection Pool jdbc/petfinderdb_pool</description>
     </jdbc-resource>
 </resources>
+        <!-- jdbc-connection-pool name="petfinderdb_pool"
+        pool-name="petfinderdb_pool"
+        jndi-name="java:app/jdbc/petfinderdb"
+        -->

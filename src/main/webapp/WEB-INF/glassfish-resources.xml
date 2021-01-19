@@ -43,6 +43,6 @@
     </jdbc-connection-pool>
 
     <jdbc-resource enabled="true" jndi-name="java:app/jdbc/petfinderdb" object-type="user" pool-name="petfinderdb_pool">
-        <description>Test DataSource jdbc/petfinderdb for Connection Pool jdbc/petfinderdb_pool</description>
+        <description>Test DataSource jdbc/petfinderdb for Connection Pool petfinderdb_pool</description>
     </jdbc-resource>
 </resources>
