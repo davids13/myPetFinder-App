@@ -2,11 +2,11 @@ package github.davids13.mypetfinderapp.commons.cookies;
 
 public class Cookie {
 
-    private String name;
-    private String value;
-    private String path;
-    private String domain;
-    private int version;
+    private final String name;
+    private final String value;
+    private final String path;
+    private final String domain;
+    private final int version;
 
     public Cookie(String name, String value, String path, String domain, int version) {
         this.name = name;

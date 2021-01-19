@@ -35,8 +35,6 @@ Ysrc/main/java/github/davids13/mypetfinderapp/commons/errors/type/PetErrorDescri
 Rsrc/main/java/github/davids13/mypetfinderapp/commons/errors/type/PetErrorCode.java,9\2\92010da143ee1cbf742f5d71787241b4da973779
 x
 Hsrc/main/java/github/davids13/mypetfinderapp/commons/cookies/Cookie.java,1\8\18555b484b6bdae1e316e1f74c4c08bccf34b790
-€
-Psrc/main/java/github/davids13/mypetfinderapp/commons/errors/ExceptionMapper.java,2\5\25abdf335d17cc0a36e946b163361c7969acab23
 †
 Vsrc/main/java/github/davids13/mypetfinderapp/commons/errors/CustomExceptionMapper.java,6\e\6e0c5d1d221a24f076f8fac579a9ebe1a64d97c6
 9
@@ -45,12 +43,6 @@ f
 6target/classes/META-INF/microprofile-config.properties,2\5\25d83dd918afdbdf96278b1bb495730bc6bb0467
 W
 'target/classes/META-INF/persistence.xml,6\b\6b218a32634615b1febcb25205c6f5e1216f1034
-}
-Mtarget/myPetFinderApp/WEB-INF/classes/META-INF/microprofile-config.properties,0\6\0637057c5b25437f4d41ea29052fccb7bf280093
-n
->target/myPetFinderApp/WEB-INF/classes/META-INF/persistence.xml,7\9\79e0e660e4c4d9db240f2679159e74d5b5289097
-x
-Hsrc/main/java/github/davids13/mypetfinderapp/commons/errors/Testing.java,f\8\f803fa6812d49068f2217d2bc0db2d700fc46eaa
 r
 Bsrc/test/java/github/davids13/mypetfinderapp/entity/OwnerTest.java,c\d\cd7cc31cb4f4a8bc9fe8562264baab0cc37f9266
 E
@@ -64,3 +56,11 @@ y
 Isrc/main/java/github/davids13/mypetfinderapp/control/dao/IGenericDAO.java,f\6\f61def42c640e9d6f74d24f37b217723e7832899
 }
 Msrc/main/java/github/davids13/mypetfinderapp/control/service/IPetService.java,d\f\dffb9b278b8994cc24eca225f985a9b53242a689
+€
+Psrc/main/java/github/davids13/mypetfinderapp/commons/errors/PetErrorMessage.java,d\d\ddd0cc19cf4bce10ab5d6fe537e65e2239717564
+‡
+Wsrc/main/java/github/davids13/mypetfinderapp/commons/errors/CustomExceptionsFacade.java,9\a\9a2f3a0c2fe184f0a523ef939db8d014dac333c2
+”
+dsrc/main/java/github/davids13/mypetfinderapp/commons/filterandinterceptors/RequestLoggingFilter.java,0\4\049aca4c299fe3a4b3e9433cb4e6a4d1f96a51f0
+•
+esrc/main/java/github/davids13/mypetfinderapp/commons/filterandinterceptors/ResponseLoggingFilter.java,2\8\2847b40e4ba394eb077652edb75da48baa122b6f

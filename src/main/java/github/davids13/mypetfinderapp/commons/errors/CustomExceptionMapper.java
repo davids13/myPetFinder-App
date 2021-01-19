@@ -18,13 +18,14 @@ public class CustomExceptionMapper implements ExceptionMapper<CustomException> {
     */
     @Override
     public Response toResponse(final CustomException exception) {
-        return Response.status(Response.Status.NOT_FOUND)
+        return Response.status(Response.Status.fromStatusCode(exception.getStatusCode()))
                 .entity(new PetErrorMessage(
                         exception.getRequestDateTime(),
                         exception.getStatusCode(),
                         exception.getPetErrorCode(),
                         exception.getPetErrorDescription(),
-                        exception.getLink()))
+                        exception.getLink(),
+                        exception.getRequestUrl()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

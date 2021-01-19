@@ -17,6 +17,7 @@ public class GenericDAO implements IGenericDAO {
     private EntityManager entityManager;
 
     // Generic CRUD methods
+    //@Transactional Mark your CDI bean method as @Transactional and the EntityManager will enlist and flush at commit.
     public <T extends AbstractEntity> void save(final T object) {
         entityManager.persist(object);
     }
