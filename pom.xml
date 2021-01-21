@@ -17,9 +17,10 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
-        <!-- Java Spec -->
+        <!-- Java EE -->
         <javaee.api.version>8.0.1</javaee.api.version>
-        <javax.ejb.api.version>3.2.2</javax.ejb.api.version>
+        <!-- Microprofile Spec (Java EE) -->
+        <microprofile.version>4.0.1</microprofile.version>
         <!-- Database -->
         <postgres.version>42.2.18</postgres.version>
         <!-- JPA -->
@@ -30,10 +31,11 @@
         <!-- Unit Tests -->
         <junit5.version>5.6.1</junit5.version>
         <mockito.jupiter.version>3.4.6</mockito.jupiter.version>
-        <!-- Utils -->
-        <microprofile.version>1.4</microprofile.version>
         <!-- Logging -->
         <log4.version>1.2.17</log4.version>
+        <!-- Swagger -->
+        <swagger.jaxrs2.version>2.1.6</swagger.jaxrs2.version>
+        <swagger.jaxrs.servlet.initializer.v2.version>2.1.6</swagger.jaxrs.servlet.initializer.v2.version>
     </properties>
 
     <dependencies>
@@ -44,10 +46,13 @@
             <version>${javaee.api.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Microprofile Spec (Java EE) -->
         <dependency>
-            <groupId>javax.ejb</groupId>
-            <artifactId>javax.ejb-api</artifactId>
-            <version>${javax.ejb.api.version}</version>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <version>${microprofile.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
         </dependency>
         <!-- Database -->
         <dependency>
@@ -85,17 +90,22 @@
             <version>${mockito.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Micro Profile -->
-        <dependency>
-            <groupId>org.eclipse.microprofile.config</groupId>
-            <artifactId>microprofile-config-api</artifactId>
-            <version>${microprofile.version}</version>
-        </dependency>
         <!-- Logging -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4.version}</version>
+        </dependency>
+        <!-- Swagger / OpenAPI -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <version>${swagger.jaxrs2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2-servlet-initializer-v2</artifactId>
+            <version>${swagger.jaxrs.servlet.initializer.v2.version}</version>
         </dependency>
     </dependencies>
 
@@ -103,6 +113,28 @@
         <finalName>myPetFinderApp</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
+                <plugin>
+                    <groupId>io.swagger.core.v3</groupId>
+                    <artifactId>swagger-maven-plugin</artifactId>
+                    <version>2.1.1</version>
+                    <configuration>
+                        <outputFileName>openapi</outputFileName>
+                        <outputPath>src/main/resources/META-INF</outputPath>
+                        <outputFormat>json</outputFormat>
+                        <resourcePackages>
+                            <package>github.davids13</package>
+                        </resourcePackages>
+                        <prettyPrint>TRUE</prettyPrint>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>resolve</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.1.0</version>
