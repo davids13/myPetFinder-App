@@ -1,8 +1,14 @@
 package github.davids13.mypetfinderapp.entity;
 
 import github.davids13.mypetfinderapp.commons.jpa.AbstractEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +27,7 @@ public class Owner extends AbstractEntity {
     public static final String OWNER_PET_FIND_ALL_QUERY = "SELECT o FROM Owner o JOIN Pet p ON o.id=p.id";
 
     @Column(name = "first_name")
+    @Schema(required = true, description = "Owners first name", example = "John")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
