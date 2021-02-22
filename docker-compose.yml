@@ -8,10 +8,14 @@ services:
     depends_on:
       - db
     ports:
+      - "4848:4848"
       - "8080:8080"
-    network_mode: host # used for postgres tcp connections issues / access localhost
+      - "8181:8181"
+      - "8443:8443"
+      - "9009:9009"
+    network_mode: "host" # used for postgres tcp connections issues / access localhost
   db:
-    container_name: db
+    container_name: postgres
     image: postgres:alpine
     env_file:
       - ope/docker/database.env
@@ -22,6 +26,7 @@ services:
       - pgdata:/var/lib/postgresql/data # persist data even if container shuts down
 volumes:
   pgdata: # named volumes can be managed easier using docker-compose
+
 
 # https://medium.com/analytics-vidhya/getting-started-with-postgresql-using-docker-compose-34d6b808c47c
 # https://www.baeldung.com/spring-boot-postgresql-docker
