@@ -1,0 +1,20 @@
+{
+  "owner": [
+    {
+      "dpNumber": "10000",
+      "legalEntities": [
+        {
+          "dpNumber": "legal entities dpNumber",
+          "outletInformations": [
+            {
+              "bunos": [
+                "31139",
+                "buno number"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
